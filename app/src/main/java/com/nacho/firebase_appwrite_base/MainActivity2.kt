@@ -20,9 +20,14 @@ class MainActivity2 : AppCompatActivity() {
         binding = ActivityMain2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.boton.setOnClickListener{
+        binding.botonCrear.setOnClickListener{
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
+        binding.botonLista.setOnClickListener{
+            val intent = Intent(this, List::class.java)
+            startActivity(intent)
+        }
+
     }
 }

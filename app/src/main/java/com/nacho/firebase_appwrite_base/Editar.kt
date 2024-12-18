@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -67,6 +68,8 @@ class EditUserActivity : AppCompatActivity() {
         val userRating = intent.getFloatExtra("userRating", 0f)
         val userAvatar = intent.getStringExtra("userAvatar") ?: ""
 
+        Log.d("Avatar", "URL de la imagen: $userAvatar")
+
         binding.nombreEdit.setText(userName)
         binding.grupoEdit.setText(userGrupo)
         binding.ratingEdit.rating = userRating
@@ -84,7 +87,6 @@ class EditUserActivity : AppCompatActivity() {
         binding.avatarEdit.setOnClickListener {
             url_galeria.launch("image/*") // Lanzar la galería cuando el usuario haga clic en el avatar
             //Seteamos la nueva imagen en el userAvatar
-            binding.avatarEdit.setImageURI(url)
         }
 
         val colors = arrayOf(R.color.green_dark, R.color.green_medium, R.color.green_light)
