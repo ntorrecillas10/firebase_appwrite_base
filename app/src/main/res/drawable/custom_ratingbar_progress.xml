@@ -1,0 +1,14 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fondo de las estrellas vacías (blanco) -->
+    <item android:left="0dp" android:right="0dp">
+        <shape>
+            <solid android:color="@android:color/white" />
+            <size android:width="24dp" android:height="24dp"/>
+        </shape>
+    </item>
+
+    <!-- Estrellas rellenas (verde oscuro) -->
+    <item android:left="0dp" android:right="0dp">
+        <clip android:drawable="@drawable/ratingbar_filled" android:gravity="left"/>
+    </item>
+</layer-list>

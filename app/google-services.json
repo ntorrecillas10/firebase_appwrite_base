@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "669633164102",
+    "firebase_url": "https://fir-appwritebase-default-rtdb.firebaseio.com",
+    "project_id": "fir-appwritebase",
+    "storage_bucket": "fir-appwritebase.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669633164102:android:0389d025c344ef1ae86b47",
+        "android_client_info": {
+          "package_name": "com.nacho.firebase_appwrite_base"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwuC7tROHnKe-lf2Y6koDnmfpcbMiPXIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

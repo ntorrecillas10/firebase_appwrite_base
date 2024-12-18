@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="estiloSpinner" parent="Widget.AppCompat.Spinner">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:backgroundTint">@color/green_dark</item>
+        <item name="android:popupBackground">@color/green_dark</item>
+        <item name="android:dropDownSelector">@color/green_dark</item>
+    </style>
+
+    <style name="CustomRatingBar">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:numStars">5</item>
+    <item name="android:stepSize">0.5</item>
+    <item name="android:rating">0</item>
+    <item name="android:progressTint">@color/green_medium</item>
+    <item name="android:progressBackgroundTint">@color/white</item>
+    </style>
+
+    <style name="CustomRatingBarSmall" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:numStars">5</item>
+        <item name="android:stepSize">0.5</item>
+        <item name="android:rating">0</item>
+        <item name="android:progressTint">@color/green_medium</item>
+        <item name="android:progressBackgroundTint">@color/white</item>
+    </style>
+
+
+</resources>
