@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.internal.Util
 //appwrite
 import io.appwrite.Client
+import io.appwrite.ID
 import io.appwrite.models.InputFile
 import io.appwrite.services.Storage
 import kotlinx.coroutines.CoroutineScope
@@ -153,7 +154,7 @@ class MainActivity : AppCompatActivity() {
                     Log.d("Date", usuario_nuevo.fecha)
 
                     //subimos la imagen a appwrite storage y los datos a firebase
-                    identificadorAppWrite = identificador.substring(1, 20) // coge el identificador y lo adapta a appwrite
+                    identificadorAppWrite = ID.unique() // coge el identificador y lo adapta a appwrite
 
                     //necesario para crear un archivo temporal con la imagen
                     val inputStream = this.contentResolver.openInputStream(url)
