@@ -45,7 +45,7 @@ class VerListaGrupos : AppCompatActivity() {
 
         // Configuración del RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
-        grupoAdapter = GrupoAdapter(grupoList)
+        grupoAdapter = GrupoAdapter(grupoList, binding.recyclerView)
         binding.recyclerView.adapter = grupoAdapter
 
         // Obtener todos los grupos de Firebase
