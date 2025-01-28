@@ -19,7 +19,7 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
     private lateinit var binding: ActivityVerListaSuperheroesBinding
 
     private lateinit var refBD: DatabaseReference
-    private lateinit var userList: MutableList<Superheroe>
+    private lateinit var superheroeList: MutableList<Superheroe>
     private lateinit var superheroeAdapter: SuperheroeAdapter
 
 
@@ -29,7 +29,7 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
         setContentView(binding.root)
 
         refBD = FirebaseDatabase.getInstance().reference
-        userList = mutableListOf()
+        superheroeList = mutableListOf()
 
         binding.volver.setOnClickListener {
             val intent = Intent(this, ActividadPrincipal::class.java)
@@ -44,9 +44,9 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
 
         binding.textoSuperior.doOnTextChanged { text, _, _, _ ->
             val filteredList = if (text.isNullOrEmpty()) {
-                userList // Restauramos la lista completa
+                superheroeList // Restauramos la lista completa
             } else {
-                userList.filter { superheroe ->
+                superheroeList.filter { superheroe ->
                     superheroe.nombre.contains(text.toString(), ignoreCase = true)
                 }
             }
@@ -59,9 +59,9 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 when (position) {
-                    0 -> userList.sortBy { it.rating }
-                    1 -> userList.sortByDescending { it.rating }
-                    2 -> userList.sortBy { it.grupo.lowercase() }
+                    0 -> superheroeList.sortBy { it.rating }
+                    1 -> superheroeList.sortByDescending { it.rating }
+                    2 -> superheroeList.sortBy { it.grupo.lowercase() }
 
                 }
                 superheroeAdapter.notifyDataSetChanged() // Notify adapter of data change
@@ -69,7 +69,7 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // Handle case where nothing is selected (optional)
-                userList.sortBy { it.fecha}
+                superheroeList.sortBy { it.fecha}
             }
         }
 
@@ -77,16 +77,16 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
         // Configuración del RecyclerView
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        superheroeAdapter = SuperheroeAdapter(userList, recyclerView)
+        superheroeAdapter = SuperheroeAdapter(superheroeList, recyclerView)
         recyclerView.adapter = superheroeAdapter
 
         // Obtener todos los Superheroe de Firebase
         refBD.child("superheroes").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                userList.clear() // Limpiar la lista antes de agregar los nuevos datos
+                superheroeList.clear() // Limpiar la lista antes de agregar los nuevos datos
                 for (pojo in snapshot.children) {
                     val superheroe = pojo.getValue(Superheroe::class.java)
-                    superheroe?.let { userList.add(it) }
+                    superheroe?.let { superheroeList.add(it) }
                 }
                 superheroeAdapter.notifyDataSetChanged() // Notificar al adaptador que los datos han cambiado
             }

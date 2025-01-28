@@ -14,4 +14,6 @@ data class Superheroe (
     var key: String = "",
     //Guardamos la fecha de creacion en formato YYYY-MM-DD
     var fecha: String = dateFormat.format(Date())
+//    var id_grupo:String?="libre",
+//    var nombre_grupo:String?=""
 ):Serializable
