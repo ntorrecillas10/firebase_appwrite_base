@@ -4,6 +4,7 @@ plugins {
     //necesario
     id("com.google.gms.google-services")
     id ("kotlin-kapt")
+    id ("kotlin-parcelize")
 }
 
 android {

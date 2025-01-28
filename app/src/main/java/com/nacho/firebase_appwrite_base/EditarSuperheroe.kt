@@ -1,7 +1,5 @@
 package com.nacho.firebase_appwrite_base
 
-import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.nacho.firebase_appwrite_base.databinding.ActivityEditarBinding
+import com.nacho.firebase_appwrite_base.databinding.ActivityEditarSuperheroeBinding
 import io.appwrite.Client
 import io.appwrite.ID
 import io.appwrite.models.InputFile
@@ -22,12 +20,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 
-class EditUserActivity : AppCompatActivity() {
+class EditarSuperheroe : AppCompatActivity() {
 
-    private lateinit var binding: ActivityEditarBinding
+    private lateinit var binding: ActivityEditarSuperheroeBinding
     private lateinit var refBD: DatabaseReference
-    private lateinit var userId: String
-    private lateinit var userAvatar: String
+    private lateinit var superheroeId: String
 
     // Appwrite variables
     private lateinit var appWriteClient: Client
@@ -47,25 +44,24 @@ class EditUserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityEditarBinding.inflate(layoutInflater)
+        binding = ActivityEditarSuperheroeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initializeAppwrite()
         initializeUI()
 
+        superheroeId = intent.getStringExtra("superheroeId") ?: ""
+        val superheroeName = intent.getStringExtra("superheroeName") ?: ""
+        val superheroeGroup = intent.getStringExtra("superheroeGrupo") ?: ""
+        val superheroeRating = intent.getFloatExtra("superheroeRating", 0f)
+        val superheroeAvatar = intent.getStringExtra("superheroeAvatar") ?: ""
 
-        userId = intent.getStringExtra("userId") ?: ""
-        val userName = intent.getStringExtra("userName") ?: ""
-        val userGroup = intent.getStringExtra("userGrupo") ?: ""
-        val userRating = intent.getFloatExtra("userRating", 0f)
-        val userAvatar = intent.getStringExtra("userAvatar") ?: ""
-
-        binding.nombreEdit.setText(userName)
-        binding.grupoEdit.setText(userGroup)
-        binding.ratingEdit.rating = userRating
+        binding.nombreEdit.setText(superheroeName)
+        binding.grupoEdit.setText(superheroeGroup)
+        binding.ratingEdit.rating = superheroeRating
 
         Glide.with(this)
-            .load(userAvatar)
+            .load(superheroeAvatar)
             .into(binding.avatarEdit)
 
         setUpListeners()
@@ -77,21 +73,21 @@ class EditUserActivity : AppCompatActivity() {
             val rating = binding.ratingEdit.rating
 
             if (nombre.isNotEmpty() && grupo.isNotEmpty() && rating != 0f) {
-                val updatedUser = Usuario(nombre, grupo, "", rating, userId)
+                val updatedSuperheroe = Superheroe(nombre, grupo, "", rating, superheroeId)
 
                 // Actualizar en Firebase
-                refBD.child("usuarios").child(userId).setValue(updatedUser)
+                refBD.child("superheroes").child(superheroeId).setValue(updatedSuperheroe)
                     .addOnSuccessListener {
                         uploadImageToAppwrite()
                         scope.launch(Dispatchers.IO) {
                             storage.deleteFile(
                                 bucketId = miBucketId,
-                                fileId = userAvatar.split("/")[8]
+                                fileId = superheroeAvatar.split("/")[8]
                             )
                         }
                     }
                     .addOnFailureListener {
-                        Toast.makeText(this, "Error al actualizar usuario", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Error al actualizar superheroe", Toast.LENGTH_SHORT).show()
                     }
             } else {
                 Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show()
@@ -138,17 +134,13 @@ class EditUserActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserData() {
-
-    }
-
     private fun uploadImageToAppwrite() {
         if (url != null) {
             scope.launch(Dispatchers.IO) {
                 try {
                     val inputStream = contentResolver.openInputStream(url!!)
                     val file = inputStream?.let { input ->
-                        val tempFile = File.createTempFile(userId, null)
+                        val tempFile = File.createTempFile(superheroeId, null)
                         input.copyTo(tempFile.outputStream())
                         InputFile.fromFile(tempFile)
                     }
@@ -162,28 +154,28 @@ class EditUserActivity : AppCompatActivity() {
                         )
 
                         val avatarUrl = "https://cloud.appwrite.io/v1/storage/buckets/$miBucketId/files/$identificadorAppWrite/preview?project=$miProyectoId"
-                        val updatedUser = Usuario(
+                        val updatedSuperheroe = Superheroe(
                             binding.nombreEdit.text.toString(),
                             binding.grupoEdit.text.toString(),
                             avatarUrl,
                             binding.ratingEdit.rating,
-                            userId
+                            superheroeId
                         )
 
-                        refBD.child("usuarios").child(userId).setValue(updatedUser)
+                        refBD.child("superheroes").child(superheroeId).setValue(updatedSuperheroe)
 
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(this@EditUserActivity, "Usuario actualizado con éxito", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@EditarSuperheroe, "Superheroe actualizado con éxito", Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     } else {
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(this@EditUserActivity, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@EditarSuperheroe, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
                         }
                     }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(this@EditUserActivity, "Error al procesar la imagen", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@EditarSuperheroe, "Error al procesar la imagen", Toast.LENGTH_SHORT).show()
                     }
                     Log.e("UploadError", "Error al subir la imagen: ${e.message}")
                 }

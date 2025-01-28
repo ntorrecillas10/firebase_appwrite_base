@@ -9,4 +9,5 @@
     <color name="green_medium">#3E8E41</color>
     <color name="red">#D22A1E</color>
     <color name="blue">#2290C2</color>
+    <color name="translucido">#80000000</color>
 </resources>

@@ -11,29 +11,28 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.firebase.database.*
-import com.nacho.firebase_appwrite_base.databinding.ActivityListBinding
+import com.nacho.firebase_appwrite_base.databinding.ActivityVerListaSuperheroesBinding
 
-class List<T> : AppCompatActivity() {
+class VerListaSuperheroes<T> : AppCompatActivity() {
 
-    private lateinit var binding: ActivityListBinding
+    private lateinit var binding: ActivityVerListaSuperheroesBinding
 
     private lateinit var refBD: DatabaseReference
-    private lateinit var userList: MutableList<Usuario>
-    private lateinit var userAdapter: UserAdapter
+    private lateinit var userList: MutableList<Superheroe>
+    private lateinit var superheroeAdapter: SuperheroeAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityListBinding.inflate(layoutInflater)
+        binding = ActivityVerListaSuperheroesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         refBD = FirebaseDatabase.getInstance().reference
         userList = mutableListOf()
 
         binding.volver.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, ActividadPrincipal::class.java)
             startActivity(intent)
         }
         // Configurar el Spinner
@@ -47,11 +46,11 @@ class List<T> : AppCompatActivity() {
             val filteredList = if (text.isNullOrEmpty()) {
                 userList // Restauramos la lista completa
             } else {
-                userList.filter { usuario ->
-                    usuario.nombre.contains(text.toString(), ignoreCase = true)
+                userList.filter { superheroe ->
+                    superheroe.nombre.contains(text.toString(), ignoreCase = true)
                 }
             }
-            userAdapter.updateList(filteredList) // Actualizamos la lista mostrada
+            superheroeAdapter.updateList(filteredList) // Actualizamos la lista mostrada
         }
 
 
@@ -65,7 +64,7 @@ class List<T> : AppCompatActivity() {
                     2 -> userList.sortBy { it.grupo.lowercase() }
 
                 }
-                userAdapter.notifyDataSetChanged() // Notify adapter of data change
+                superheroeAdapter.notifyDataSetChanged() // Notify adapter of data change
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -78,22 +77,22 @@ class List<T> : AppCompatActivity() {
         // Configuración del RecyclerView
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        userAdapter = UserAdapter(userList, recyclerView)
-        recyclerView.adapter = userAdapter
+        superheroeAdapter = SuperheroeAdapter(userList, recyclerView)
+        recyclerView.adapter = superheroeAdapter
 
-        // Obtener todos los usuarios de Firebase
-        refBD.child("usuarios").addValueEventListener(object : ValueEventListener {
+        // Obtener todos los Superheroe de Firebase
+        refBD.child("superheroes").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 userList.clear() // Limpiar la lista antes de agregar los nuevos datos
                 for (pojo in snapshot.children) {
-                    val usuario = pojo.getValue(Usuario::class.java)
-                    usuario?.let { userList.add(it) }
+                    val superheroe = pojo.getValue(Superheroe::class.java)
+                    superheroe?.let { userList.add(it) }
                 }
-                userAdapter.notifyDataSetChanged() // Notificar al adaptador que los datos han cambiado
+                superheroeAdapter.notifyDataSetChanged() // Notificar al adaptador que los datos han cambiado
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@List, "Error al cargar los usuarios", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@VerListaSuperheroes, "Error al cargar los superheroes", Toast.LENGTH_SHORT).show()
             }
         })
     }

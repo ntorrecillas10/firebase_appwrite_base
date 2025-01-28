@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".CrearGrupo">
+
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:background="@color/black"
+        android:id="@+id/volver"
+        android:layout_height="40dp"
+        android:layout_width="40dp"
+        android:src="@drawable/flechita_atras_blanco"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/textoSuperior"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:text="Añadir Grupo"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/nombre_grupo_layout"
+        app:layout_constraintVertical_weight="4"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nombre_grupo_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="20dp"
+        android:hint="Nombre"
+        app:errorEnabled="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textoSuperior"
+        app:layout_constraintBottom_toTopOf="@id/creacion_grupo"
+        app:layout_constraintVertical_weight="2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nombre_grupo_text_input_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxLength="40"
+            android:textColor="@color/black"
+            android:background="@drawable/verde_clarito_bordes_redondeados_negros"
+            android:padding="10dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/creacion_grupo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="20dp"
+        android:hint="Lugar de creación"
+        app:errorEnabled="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nombre_grupo_layout"
+        app:layout_constraintBottom_toTopOf="@id/miembros_layout"
+        app:layout_constraintVertical_weight="2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/creacion_grupo_text_input_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:maxLength="30"
+            android:textColor="@color/black"
+            android:background="@drawable/verde_clarito_bordes_redondeados_negros"
+            android:padding="10dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/miembros_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="20dp"
+        android:hint="Num.Miembros"
+        app:errorEnabled="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/creacion_grupo"
+        app:layout_constraintBottom_toTopOf="@id/avatar_input"
+        app:layout_constraintVertical_weight="2">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/miembros_text_input_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="number"
+            android:maxLength="20"
+            android:textColor="@color/black"
+            android:background="@drawable/verde_clarito_bordes_redondeados_negros"
+            android:padding="10dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <ImageView
+        android:id="@+id/avatar_input"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"
+        android:src="@drawable/photo_blanco"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/miembros_layout"
+        app:layout_constraintBottom_toTopOf="@id/confirmar"
+        app:layout_constraintVertical_weight="7"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/confirmar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Confirmar"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/green_dark"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/cargar"
+        app:layout_constraintTop_toBottomOf="@id/avatar_input"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_weight="3"
+        android:layout_marginBottom="30dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/cargar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="Ir a lista"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/green_medium"
+        app:layout_constraintStart_toEndOf="@id/confirmar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/avatar_input"
+        app:layout_constraintBottom_toBottomOf="@id/confirmar"/>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

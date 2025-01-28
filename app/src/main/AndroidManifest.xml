@@ -13,16 +13,22 @@
         android:theme="@style/Theme.Firebase_appwrite_base"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".CrearGrupo"
             android:exported="false" />
         <activity
-            android:name=".EditUserActivity"
+            android:name=".VerListaGrupos"
             android:exported="false" />
         <activity
-            android:name=".List"
+            android:name=".CrearSuperheroe"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
+            android:name=".EditarSuperheroe"
+            android:exported="false" />
+        <activity
+            android:name=".VerListaSuperheroes"
+            android:exported="false" />
+        <activity
+            android:name=".ActividadPrincipal"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
