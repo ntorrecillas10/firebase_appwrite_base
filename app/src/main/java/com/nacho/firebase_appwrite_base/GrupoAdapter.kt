@@ -43,7 +43,7 @@ class GrupoAdapter(
         val grupo = displayedList[position]
         holder.binding.nombreGrupoCreado.text = grupo.nombre
         holder.binding.lugarGrupoCreado.text = grupo.lugarCreacion
-        holder.binding.miembrosNum.text = grupo.numMiembros.toString()
+        holder.binding.worthNum.text = grupo.worthNum.toString()
 
 
         miProyectoId = "67586efe0025b764b95d" // ID del proyecto de Appwrite
@@ -90,7 +90,7 @@ class GrupoAdapter(
                 putExtra("grupoName", grupo.nombre)
                 putExtra("grupoLugar", grupo.lugarCreacion)
                 putExtra("grupoAvatar", grupo.avatarUrl)
-                putExtra("grupoMiembros", grupo.numMiembros)
+                putExtra("grupoWorth", grupo.worthNum)
             }
             holder.itemView.context.startActivity(intent)
 
@@ -124,13 +124,15 @@ class GrupoAdapter(
         holder.binding.verSuperheroes.setOnClickListener {
             val intent = Intent(holder.itemView.context, VerListaSuperheroes::class.java).apply {
                 putExtra("accion", "grupo")
-                putExtra("grupo", grupo.nombre)
+                putExtra("id_grupo_accion", grupo.nombre)
             }
             holder.itemView.context.startActivity(intent)
         }
         holder.binding.anadirSuperheroes.setOnClickListener {
             val intent = Intent(holder.itemView.context, VerListaSuperheroes::class.java).apply {
                 putExtra("accion", "fichar")
+                putExtra("id_grupo_accion", grupo.key)
+                putExtra("nombre_grupo_accion", grupo.nombre)
             }
             holder.itemView.context.startActivity(intent)
         }

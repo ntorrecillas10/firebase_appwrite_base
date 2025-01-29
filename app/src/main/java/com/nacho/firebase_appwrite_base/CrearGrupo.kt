@@ -92,7 +92,7 @@ class CrearGrupo : AppCompatActivity() {
                 if (binding.avatarInput.drawable != null) {
                     imagen = true
                 }
-                if (binding.nombreGrupoTextInputEdit.text.toString() != "" && binding.creacionGrupoTextInputEdit.text.toString() != "" && binding.miembrosTextInputEdit.text.toString().toInt() != 0) {
+                if (binding.nombreGrupoTextInputEdit.text.toString() != "" && binding.creacionGrupoTextInputEdit.text.toString() != "" && binding.worthTextInputEdit.text.toString().toInt() != 0) {
                     campos = true
                 }
                 if (campos && imagen) {
@@ -142,7 +142,7 @@ class CrearGrupo : AppCompatActivity() {
                             grupo_nuevo = Grupo(
                                 binding.nombreGrupoTextInputEdit.text.toString(),
                                 binding.creacionGrupoTextInputEdit.text.toString(),
-                                binding.miembrosTextInputEdit.text.toString().toInt(),
+                                binding.worthTextInputEdit.text.toString().toInt(),
                                 url_avatar,
                                 identificador
                             )

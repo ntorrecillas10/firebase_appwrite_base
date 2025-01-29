@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.nacho.firebase_appwrite_base.databinding.ItemSuperheroeBinding
 import io.appwrite.Client
@@ -20,6 +22,9 @@ import kotlin.collections.List
 class SuperheroeAdapter(
     originalList: List<Superheroe>, // Lista completa que no cambia
     private val recyclerPadre: RecyclerView,
+    private val accion: String? = "",
+    private val id_grupo: String? = "",
+    private val nombre_grupo: String? = ""
 ) : RecyclerView.Adapter<SuperheroeAdapter.SuperheroeViewHolder>() {
 
     private var displayedList: List<Superheroe> = originalList // Lista que se muestra actualmente
@@ -31,7 +36,7 @@ class SuperheroeAdapter(
     private lateinit var storage: Storage
     private lateinit var miBucketId: String
     private lateinit var miProyectoId: String
-    private val accion: String =""
+    private lateinit var refBD: DatabaseReference
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SuperheroeViewHolder {
         val binding = ItemSuperheroeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -41,8 +46,8 @@ class SuperheroeAdapter(
     override fun onBindViewHolder(holder: SuperheroeViewHolder, position: Int) {
         val superheroe = displayedList[position]
         holder.binding.nombreCreado.text = superheroe.nombre
-        holder.binding.grupoCreado.text = superheroe.grupo
         holder.binding.ratingCreado.rating = superheroe.rating
+        holder.binding.estadoCreado.text = superheroe.id_grupo
 
         miProyectoId = "67586efe0025b764b95d" // ID del proyecto de Appwrite
         miBucketId = "67586f44003e5355a3b7" // ID del bucket de Appwrite
@@ -57,10 +62,28 @@ class SuperheroeAdapter(
             .into(holder.binding.avatarCreado)
 
 
+        initializeUI()
 
-        if (accion != "todos") {
-            holder.binding.transferirBoton.visibility = View.VISIBLE
+        if (accion == "todos") {
+            holder.binding.transferirBoton.visibility = View.GONE
         }
+
+        var nuevo_id = "libre"
+        var nombre_grupoo = ""
+        holder.binding.transferirBoton.setOnClickListener {
+            if (accion == "plantilla") { //Es para hecharle
+                Toast.makeText(this.recyclerPadre.context, "Jugador despedido", Toast.LENGTH_SHORT).show()
+            } else if (accion == "fichar") {//Es para ficharle por el id grupo
+                nuevo_id = id_grupo!!
+                nombre_grupoo = nombre_grupo!!
+                Toast.makeText(this.recyclerPadre.context, "Jugador fichado", Toast.LENGTH_SHORT).show()
+            }
+            refBD.child("superheroes").child(superheroe.key).child("id_grupo").setValue(nuevo_id)
+            refBD.child("superheroes").child(superheroe.key).child("nombre_grupo").setValue(nombre_grupoo)
+
+        }
+
+
 
         holder.binding.main.setOnClickListener{
             //damos visibilidad a sus botones de borrar y editar y quitamos la visibilidad a los demás botones de editar y borrar
@@ -92,12 +115,10 @@ class SuperheroeAdapter(
                 holder.binding.deleteButton.visibility = View.INVISIBLE
                 putExtra("superheroeId", superheroe.key)
                 putExtra("superheroeName", superheroe.nombre)
-                putExtra("superheroeGrupo", superheroe.grupo)
                 putExtra("superheroeRating", superheroe.rating)
                 putExtra("superheroeAvatar", superheroe.avatar)
             }
             holder.itemView.context.startActivity(intent)
-
         }
 
         // Botón de borrar
@@ -124,6 +145,8 @@ class SuperheroeAdapter(
                     Log.e("Firebase", "Error deleting superheroe: ${e.message}")
                 }
         }
+
+        Log.d("accion", "accion: $accion, id_grupo: $id_grupo")
     }
 
     override fun getItemCount(): Int = displayedList.size
@@ -132,5 +155,8 @@ class SuperheroeAdapter(
     fun updateList(newList: List<Superheroe>) {
         displayedList = newList
         notifyDataSetChanged()
+    }
+    private fun initializeUI() {
+        refBD = FirebaseDatabase.getInstance().reference
     }
 }

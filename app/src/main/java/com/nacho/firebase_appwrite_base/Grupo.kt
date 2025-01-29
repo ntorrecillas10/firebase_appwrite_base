@@ -11,7 +11,7 @@ val dateFormatGrupo = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 data class Grupo(
     val nombre: String = "",
     val lugarCreacion: String = "",
-    val numMiembros: Int = 0,
+    val worthNum: Int = 0,
     val avatarUrl: String = "",
     val key: String = "",
     val fecha: String = dateFormatGrupo.format(Date())

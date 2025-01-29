@@ -52,12 +52,10 @@ class EditarSuperheroe : AppCompatActivity() {
 
         superheroeId = intent.getStringExtra("superheroeId") ?: ""
         val superheroeName = intent.getStringExtra("superheroeName") ?: ""
-        val superheroeGroup = intent.getStringExtra("superheroeGrupo") ?: ""
         val superheroeRating = intent.getFloatExtra("superheroeRating", 0f)
         val superheroeAvatar = intent.getStringExtra("superheroeAvatar") ?: ""
 
         binding.nombreEdit.setText(superheroeName)
-        binding.grupoEdit.setText(superheroeGroup)
         binding.ratingEdit.rating = superheroeRating
 
         Glide.with(this)
@@ -69,11 +67,10 @@ class EditarSuperheroe : AppCompatActivity() {
         // Listener para guardar los datos
         binding.guardarButton.setOnClickListener {
             val nombre = binding.nombreEdit.text.toString()
-            val grupo = binding.grupoEdit.text.toString()
             val rating = binding.ratingEdit.rating
 
-            if (nombre.isNotEmpty() && grupo.isNotEmpty() && rating != 0f) {
-                val updatedSuperheroe = Superheroe(nombre, grupo, "", rating, superheroeId)
+            if (nombre.isNotEmpty()  && rating != 0f) {
+                val updatedSuperheroe = Superheroe(nombre,"", rating, superheroeId)
 
                 // Actualizar en Firebase
                 refBD.child("superheroes").child(superheroeId).setValue(updatedSuperheroe)
@@ -156,7 +153,6 @@ class EditarSuperheroe : AppCompatActivity() {
                         val avatarUrl = "https://cloud.appwrite.io/v1/storage/buckets/$miBucketId/files/$identificadorAppWrite/preview?project=$miProyectoId"
                         val updatedSuperheroe = Superheroe(
                             binding.nombreEdit.text.toString(),
-                            binding.grupoEdit.text.toString(),
                             avatarUrl,
                             binding.ratingEdit.rating,
                             superheroeId

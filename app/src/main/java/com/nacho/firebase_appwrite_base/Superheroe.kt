@@ -8,7 +8,6 @@ val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
 data class Superheroe (
     var nombre: String = "",
-    var grupo: String = "",
     var avatar: String = "",
     var rating: Float = 0f,
     var key: String = "",

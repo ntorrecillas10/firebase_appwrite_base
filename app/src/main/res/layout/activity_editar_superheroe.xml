@@ -46,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textoSuperior"
-        app:layout_constraintBottom_toTopOf="@id/grupo_layout"
+        app:layout_constraintBottom_toTopOf="@id/rating_edit"
         app:layout_constraintVertical_weight="1">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -59,31 +59,6 @@
             android:padding="10dp" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Campo para modificar el grupo -->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/grupo_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="20dp"
-        android:hint="Grupo"
-        app:hintTextColor="@color/black"
-        app:errorEnabled="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nombre_layout"
-        app:layout_constraintBottom_toTopOf="@id/rating_edit"
-        app:layout_constraintVertical_weight="1"
-        >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/grupo_edit"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColor="@color/black"
-            android:maxLength="20"
-            android:background="@drawable/verde_clarito_bordes_redondeados_negros"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
     <!-- Campo para modificar el rating -->
     <RatingBar
         android:id="@+id/rating_edit"
@@ -94,7 +69,7 @@
         android:rating="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/grupo_layout"
+        app:layout_constraintTop_toBottomOf="@id/nombre_layout"
         app:layout_constraintBottom_toTopOf="@id/avatar_edit"/>
 
     <!-- Campo para la foto -->

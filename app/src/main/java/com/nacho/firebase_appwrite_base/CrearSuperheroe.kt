@@ -135,7 +135,7 @@ class CrearSuperheroe : AppCompatActivity() {
                 if (binding.avatarInput.drawable != null) {
                     imagen = true
                 }
-                if (binding.nombreTextInputEdit.text.toString() != "" && binding.grupoTextInputEdit.text.toString() != "" && binding.ratingBar.rating != 0f) {
+                if (binding.nombreTextInputEdit.text.toString() != "" && binding.ratingBar.rating != 0f) {
                     campos = true
                 }
                 if (campos && imagen) {
@@ -184,7 +184,6 @@ class CrearSuperheroe : AppCompatActivity() {
 
                             superheroe_nuevo = Superheroe(
                                 binding.nombreTextInputEdit.text.toString(),
-                                binding.grupoTextInputEdit.text.toString(),
                                 url_avatar,
                                 binding.ratingBar.rating,
                                 identificador

@@ -56,11 +56,11 @@ class EditarGrupo : AppCompatActivity() {
         grupoId = intent.getStringExtra("grupoId") ?: ""
         val grupoName = intent.getStringExtra("grupoName") ?: ""
         val grupoAvatar = intent.getStringExtra("grupoAvatar") ?: ""
-        val grupoMiembros = intent.getIntExtra("grupoMiembros", 0)
+        val grupoWorth = intent.getIntExtra("grupoWorth", 0)
         val grupoLugar = intent.getStringExtra("grupoLugar") ?: ""
 
         binding.nombreGrupoTextInputEdit.setText(grupoName)
-        binding.miembrosTextInputEdit.setText(grupoMiembros.toString())
+        binding.worthTextInputEdit.setText(grupoWorth.toString())
         binding.creacionGrupoTextInputEdit.setText(grupoLugar)
 
 
@@ -74,10 +74,10 @@ class EditarGrupo : AppCompatActivity() {
         binding.guardar.setOnClickListener {
             val nombre = binding.nombreGrupoTextInputEdit.text.toString()
             val grupo = binding.creacionGrupoTextInputEdit.text.toString()
-            val miembros = binding.miembrosTextInputEdit.text.toString().toIntOrNull() ?: 0
+            val worth = binding.worthTextInputEdit.text.toString().toIntOrNull() ?: 0
 
             if (nombre.isNotEmpty() && grupo.isNotEmpty()) {
-                val updatedGrupo = Grupo(nombre, grupo, miembros,"", grupoId)
+                val updatedGrupo = Grupo(nombre, grupo, worth,"", grupoId)
 
                 // Actualizar en Firebase
                 refBD.child("grupos").child(grupoId).setValue(updatedGrupo)
@@ -161,7 +161,7 @@ class EditarGrupo : AppCompatActivity() {
                         val updatedGrupo = Grupo(
                             binding.nombreGrupoTextInputEdit.text.toString(),
                             binding.creacionGrupoTextInputEdit.text.toString(),
-                            binding.miembrosTextInputEdit.text.toString().toIntOrNull() ?: 0,
+                            binding.worthTextInputEdit.text.toString().toIntOrNull() ?: 0,
                             avatarUrl,
                             grupoId
                         )

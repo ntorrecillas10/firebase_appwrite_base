@@ -6,13 +6,16 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.*
 import com.nacho.firebase_appwrite_base.databinding.ActivityVerListaSuperheroesBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.util.concurrent.CountDownLatch
 
 class VerListaSuperheroes<T> : AppCompatActivity() {
 
@@ -32,16 +35,17 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
         superheroeList = mutableListOf()
 
         val accion=intent.getStringExtra("accion")
+        val id_grupo_accion=intent.getStringExtra("id_grupo_accion")
+        val nombre_grupo_accion=intent.getStringExtra("nombre_grupo_accion")
 
-        binding.volver.setOnClickListener {
-            if (accion == "todos") {
-                val intent = Intent(this, ActividadPrincipal::class.java)
-                startActivity(intent)
-            } else {
-                val intent = Intent(this, VerListaGrupos::class.java)
-                startActivity(intent)
-            }
-        }
+
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        superheroeAdapter = SuperheroeAdapter(superheroeList,recyclerView,accion,id_grupo_accion,nombre_grupo_accion)
+        binding.recyclerView.adapter = superheroeAdapter
+        recyclerView.setHasFixedSize(true)
+
+
         // Configurar el Spinner
         val spinner = findViewById<Spinner>(R.id.filtrar)
         // Configurar el adaptador del Spinner
@@ -76,7 +80,7 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
                 when (position) {
                     0 -> superheroeList.sortBy { it.rating }
                     1 -> superheroeList.sortByDescending { it.rating }
-                    2 -> superheroeList.sortBy { it.grupo.lowercase() }
+                    2 -> superheroeList.sortBy { it.id_grupo?.lowercase() }
 
                 }
                 superheroeAdapter.notifyDataSetChanged() // Notify adapter of data change
@@ -88,73 +92,70 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
         }
 
 
-        // Configuración del RecyclerView
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        superheroeAdapter = SuperheroeAdapter(superheroeList, recyclerView)
-        recyclerView.adapter = superheroeAdapter
-
-        // Obtener todos los Superheroe de Firebase
-        if (accion == "todos") {
-            refBD.child("superheroes").addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    superheroeList.clear() // Limpiar la lista antes de agregar los nuevos datos
-                    for (pojo in snapshot.children) {
-                        val superheroe = pojo.getValue(Superheroe::class.java)
-                        superheroe?.let { superheroeList.add(it) }
-                    }
-                    superheroeAdapter.notifyDataSetChanged() // Notificar al adaptador que los datos han cambiado
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(
-                        this@VerListaSuperheroes,
-                        "Error al cargar los superheroes",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+        var busqueda:String=when(accion){
+            "fichar"->"libre"
+            "plantilla"->id_grupo_accion!!
+            else->""
         }
-        else if (accion == "fichar") {
-            refBD.child("superheroes").addValueEventListener(object : ValueEventListener {
+
+        refBD.child("superheroes")
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    superheroeList.clear() // Limpiar la lista antes de agregar los nuevos datos
-                    for (pojo in snapshot.children) {
-                        val superheroe = pojo.getValue(Superheroe::class.java)
-                        if (superheroe != null) {
-                            if (superheroe.id_grupo == "libre") {
-                                superheroeList.add(superheroe)
+                    superheroeList.clear()
+                    GlobalScope.launch(Dispatchers.IO) {
+                        snapshot.children.forEach { hijo: DataSnapshot? ->
+                            val pojoSuperheroe = hijo?.getValue(Superheroe::class.java)
+                            if(pojoSuperheroe!!.id_grupo!!.contains(busqueda as CharSequence)){
+                                if(pojoSuperheroe!!.id_grupo=="libre"){
+                                    pojoSuperheroe.nombre_grupo="libre";
+                                }else{
+                                    val semaforo = CountDownLatch(1)
+                                    //Sacar el nombre del grupo
+                                    refBD.child("grupos")
+                                        .child(pojoSuperheroe!!.id_grupo!!)
+                                        .addListenerForSingleValueEvent(object :
+                                            ValueEventListener {
+                                            override fun onDataChange(snapshot: DataSnapshot) {
+                                                val pojo_grupo = snapshot.getValue(Grupo::class.java)
+                                                pojoSuperheroe.nombre_grupo = pojo_grupo!!.nombre
+                                                semaforo.countDown()
+                                            }
+
+                                            override fun onCancelled(error: DatabaseError) {
+                                                println(error.message)
+                                            }
+                                        })
+                                    semaforo.await();
+
+                                }
+                                superheroeList.add(pojoSuperheroe!!)
                             }
-                            superheroeAdapter.notifyDataSetChanged()
+
+                        }
+
+                        runOnUiThread{
+                            binding.recyclerView.adapter?.notifyDataSetChanged()
                         }
                     }
+
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+                    println(error.message)
                 }
+            })
 
-            })
+        binding.volver.setOnClickListener {
+            if (accion == "todos") {
+                val intent = Intent(this, ActividadPrincipal::class.java)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, VerListaGrupos::class.java)
+                startActivity(intent)
+            }
         }
-        else if (accion == "grupo") {
-            val grupo = intent.getStringExtra("grupo")
-            refBD.child("superheroes").addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    superheroeList.clear() // Limpiar la lista antes de agregar los nuevos datos
-                    for (pojo in snapshot.children) {
-                        val superheroe = pojo.getValue(Superheroe::class.java)
-                        if (superheroe != null) {
-                            if (superheroe.id_grupo == grupo) {
-                                superheroeList.add(superheroe)
-                            }
-                    }
-                        superheroeAdapter.notifyDataSetChanged()
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            })
-        }
+
+
     }
 }

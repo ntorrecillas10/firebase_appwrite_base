@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/nombre_layout"
-        app:layout_constraintVertical_weight="4"/>
+        app:layout_constraintVertical_weight="3"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nombre_layout"
@@ -42,34 +42,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textoSuperior"
-        app:layout_constraintBottom_toTopOf="@id/grupo_layout"
-        app:layout_constraintVertical_weight="2">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/nombre_text_input_edit"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:maxLength="20"
-            android:textColor="@color/black"
-            android:background="@drawable/verde_clarito_bordes_redondeados_negros"
-            android:padding="10dp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/grupo_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="20dp"
-        android:hint="Grupo"
-        app:errorEnabled="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nombre_layout"
         app:layout_constraintBottom_toTopOf="@id/rating_layout"
         app:layout_constraintVertical_weight="2">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/grupo_text_input_edit"
+            android:id="@+id/nombre_text_input_edit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:maxLength="20"
@@ -86,7 +63,7 @@
         app:errorEnabled="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/grupo_layout"
+        app:layout_constraintTop_toBottomOf="@id/nombre_layout"
         app:layout_constraintBottom_toTopOf="@id/avatar_input"
         app:layout_constraintVertical_weight="2">
 

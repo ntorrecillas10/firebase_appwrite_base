@@ -65,7 +65,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nombre_grupo_layout"
-        app:layout_constraintBottom_toTopOf="@id/miembros_layout"
+        app:layout_constraintBottom_toTopOf="@id/worth_layout"
         app:layout_constraintVertical_weight="2">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -79,11 +79,11 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/miembros_layout"
+        android:id="@+id/worth_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="20dp"
-        android:hint="Num.Miembros"
+        android:hint="Valor Neto"
         app:errorEnabled="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +92,7 @@
         app:layout_constraintVertical_weight="2">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/miembros_text_input_edit"
+            android:id="@+id/worth_text_input_edit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="number"
@@ -112,7 +112,7 @@
         android:src="@drawable/photo_blanco"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/miembros_layout"
+        app:layout_constraintTop_toBottomOf="@id/worth_layout"
         app:layout_constraintBottom_toTopOf="@id/guardar"
         app:layout_constraintVertical_weight="7"/>
 
