@@ -120,6 +120,20 @@ class GrupoAdapter(
                     Log.e("Firebase", "Error deleting grupo: ${e.message}")
                 }
         }
+
+        holder.binding.verSuperheroes.setOnClickListener {
+            val intent = Intent(holder.itemView.context, VerListaSuperheroes::class.java).apply {
+                putExtra("accion", "grupo")
+                putExtra("grupo", grupo.nombre)
+            }
+            holder.itemView.context.startActivity(intent)
+        }
+        holder.binding.anadirSuperheroes.setOnClickListener {
+            val intent = Intent(holder.itemView.context, VerListaSuperheroes::class.java).apply {
+                putExtra("accion", "fichar")
+            }
+            holder.itemView.context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int = displayedList.size

@@ -31,6 +31,7 @@ class SuperheroeAdapter(
     private lateinit var storage: Storage
     private lateinit var miBucketId: String
     private lateinit var miProyectoId: String
+    private val accion: String =""
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SuperheroeViewHolder {
         val binding = ItemSuperheroeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -54,6 +55,12 @@ class SuperheroeAdapter(
         Glide.with(holder.itemView.context)
             .load(superheroe.avatar)
             .into(holder.binding.avatarCreado)
+
+
+
+        if (accion != "todos") {
+            holder.binding.transferirBoton.visibility = View.VISIBLE
+        }
 
         holder.binding.main.setOnClickListener{
             //damos visibilidad a sus botones de borrar y editar y quitamos la visibilidad a los demás botones de editar y borrar

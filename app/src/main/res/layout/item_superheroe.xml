@@ -54,7 +54,7 @@
         android:textSize="14sp"
         android:paddingStart="3dp"
         app:layout_constraintStart_toStartOf="@id/guidelinev1"
-        app:layout_constraintEnd_toStartOf="@id/guidelinev2"
+        app:layout_constraintEnd_toStartOf="@id/estado_creado"
         app:layout_constraintTop_toBottomOf="@id/nombre_creado"
         app:layout_constraintBottom_toTopOf="@id/rating_creado"
         app:layout_constraintVertical_weight="1"
@@ -62,6 +62,24 @@
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="2" />
+
+    <TextView
+        android:id="@+id/estado_creado"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textColor="@color/green_light"
+        android:text="Estado"
+        android:textSize="14sp"
+        android:paddingStart="3dp"
+        app:layout_constraintVertical_weight="1"
+        android:shadowColor="@color/white"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="2"
+        app:layout_constraintTop_toBottomOf="@id/nombre_creado"
+        app:layout_constraintBottom_toTopOf="@id/rating_creado"
+        app:layout_constraintStart_toEndOf="@id/grupo_creado"
+        app:layout_constraintEnd_toStartOf="@id/guidelinev2"/>
 
     <RatingBar
         android:id="@+id/rating_creado"
@@ -75,6 +93,22 @@
         app:layout_constraintEnd_toStartOf="@id/guidelinev2"
         app:layout_constraintTop_toBottomOf="@id/grupo_creado"
         app:layout_constraintBottom_toBottomOf="parent" />
+
+
+    <ImageView
+        android:id="@+id/transferir_boton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="2dp"
+        android:src="@drawable/tranferir_icono"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@id/edit_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guidelinev1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="4"
+        android:visibility="gone"
+        android:padding="15dp"/>
 
     <ImageView
         android:id="@+id/avatar_creado"

@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     android:padding="10dp"
-    tools:context="com.nacho.firebase_appwrite_base.EditUserActivity">
+    tools:context="com.nacho.firebase_appwrite_base.EditarSuperheroe">
 
 
     <androidx.appcompat.widget.AppCompatImageButton

@@ -44,7 +44,7 @@ class VerListaGrupos : AppCompatActivity() {
         }
 
         // Configuración del RecyclerView
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         grupoAdapter = GrupoAdapter(grupoList, binding.recyclerView)
         binding.recyclerView.adapter = grupoAdapter
 

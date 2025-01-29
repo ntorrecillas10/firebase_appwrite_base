@@ -31,14 +31,25 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
         refBD = FirebaseDatabase.getInstance().reference
         superheroeList = mutableListOf()
 
+        val accion=intent.getStringExtra("accion")
+
         binding.volver.setOnClickListener {
-            val intent = Intent(this, ActividadPrincipal::class.java)
-            startActivity(intent)
+            if (accion == "todos") {
+                val intent = Intent(this, ActividadPrincipal::class.java)
+                startActivity(intent)
+            } else {
+                val intent = Intent(this, VerListaGrupos::class.java)
+                startActivity(intent)
+            }
         }
         // Configurar el Spinner
         val spinner = findViewById<Spinner>(R.id.filtrar)
         // Configurar el adaptador del Spinner
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, listOf("RatingA", "RatingD", "Grupo"))
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            listOf("RatingA", "RatingD", "Grupo")
+        )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
 
@@ -54,10 +65,14 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
         }
 
 
-
         //evento de click en cada item del adapter
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
                 when (position) {
                     0 -> superheroeList.sortBy { it.rating }
                     1 -> superheroeList.sortByDescending { it.rating }
@@ -68,8 +83,7 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Handle case where nothing is selected (optional)
-                superheroeList.sortBy { it.fecha}
+                superheroeList.sortBy { it.fecha }
             }
         }
 
@@ -81,20 +95,66 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
         recyclerView.adapter = superheroeAdapter
 
         // Obtener todos los Superheroe de Firebase
-        refBD.child("superheroes").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                superheroeList.clear() // Limpiar la lista antes de agregar los nuevos datos
-                for (pojo in snapshot.children) {
-                    val superheroe = pojo.getValue(Superheroe::class.java)
-                    superheroe?.let { superheroeList.add(it) }
+        if (accion == "todos") {
+            refBD.child("superheroes").addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    superheroeList.clear() // Limpiar la lista antes de agregar los nuevos datos
+                    for (pojo in snapshot.children) {
+                        val superheroe = pojo.getValue(Superheroe::class.java)
+                        superheroe?.let { superheroeList.add(it) }
+                    }
+                    superheroeAdapter.notifyDataSetChanged() // Notificar al adaptador que los datos han cambiado
                 }
-                superheroeAdapter.notifyDataSetChanged() // Notificar al adaptador que los datos han cambiado
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@VerListaSuperheroes, "Error al cargar los superheroes", Toast.LENGTH_SHORT).show()
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(
+                        this@VerListaSuperheroes,
+                        "Error al cargar los superheroes",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+        }
+        else if (accion == "fichar") {
+            refBD.child("superheroes").addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    superheroeList.clear() // Limpiar la lista antes de agregar los nuevos datos
+                    for (pojo in snapshot.children) {
+                        val superheroe = pojo.getValue(Superheroe::class.java)
+                        if (superheroe != null) {
+                            if (superheroe.id_grupo == "libre") {
+                                superheroeList.add(superheroe)
+                            }
+                            superheroeAdapter.notifyDataSetChanged()
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+        }
+        else if (accion == "grupo") {
+            val grupo = intent.getStringExtra("grupo")
+            refBD.child("superheroes").addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    superheroeList.clear() // Limpiar la lista antes de agregar los nuevos datos
+                    for (pojo in snapshot.children) {
+                        val superheroe = pojo.getValue(Superheroe::class.java)
+                        if (superheroe != null) {
+                            if (superheroe.id_grupo == grupo) {
+                                superheroeList.add(superheroe)
+                            }
+                    }
+                        superheroeAdapter.notifyDataSetChanged()
+                    }
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+        }
     }
-
 }

@@ -21,6 +21,9 @@ class ActividadPrincipal : AppCompatActivity() {
         }
         binding.botonListaSuperheroe.setOnClickListener{
             val intent = Intent(this, VerListaSuperheroes::class.java)
+            intent.putExtra("accion","todos")
+            val intent2 = Intent(this, SuperheroeAdapter::class.java)
+            intent.putExtra("accion","todos")
             startActivity(intent)
         }
         binding.botonCrearGrupo.setOnClickListener{
