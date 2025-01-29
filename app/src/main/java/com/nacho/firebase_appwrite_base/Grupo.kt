@@ -15,5 +15,9 @@ data class Grupo(
     val avatarUrl: String = "",
     val key: String = "",
     val fecha: String = dateFormatGrupo.format(Date())
-): Parcelable
+): Parcelable {
+    override fun toString(): String {
+        return nombre!!
+    }
+}
 

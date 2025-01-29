@@ -38,14 +38,15 @@ class CrearPelea : AppCompatActivity() {
     private lateinit var binding: ActivityCrearPeleaBinding
 
     private fun cargarSpinner(selector: Spinner) {
-        val lista: MutableList<Grupo>
-        val adaptador: ArrayAdapter<Grupo>
+        val lista: MutableList<String>
+        val adaptador: ArrayAdapter<String>
         lista = ArrayList()
-        adaptador = ArrayAdapter<Grupo>(
+        adaptador = ArrayAdapter<String>(
             this,
             androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, lista
         )
         selector.adapter = adaptador
+
 
 
         refBD.child("grupos")
@@ -53,7 +54,7 @@ class CrearPelea : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     snapshot.children.forEach { hijo: DataSnapshot? ->
                         val pojo_grupo = hijo?.getValue(Grupo::class.java)
-                        lista.add(pojo_grupo!!)
+                        lista.add(pojo_grupo?.nombre!!)
                     }
                     adaptador.notifyDataSetChanged()
                 }
@@ -120,9 +121,12 @@ class CrearPelea : AppCompatActivity() {
 
                 escribirPelea(
                     refBD, id_generado!!, (binding.spinner1.selectedItem as Grupo).key!!,
+
                     (binding.spinner2.selectedItem as Grupo).key!!,
-                    binding.fechaLayout.text.trim().toString()
+                    binding.fechaLayout.text.trim().toString(), (binding.spinner1.selectedItem as Grupo).avatarUrl, (binding.spinner2.selectedItem as Grupo).avatarUrl,
+                    (binding.spinner1.selectedItem as Grupo).nombre, (binding.spinner2.selectedItem as Grupo).nombre
                 )
+
                 Toast.makeText(
                     applicationContext,
                     "Pelea programada con éxito",
@@ -133,13 +137,18 @@ class CrearPelea : AppCompatActivity() {
             }
         }
     }
-    fun escribirPelea(db_ref: DatabaseReference, id: String, id_equipo1: String, id_equipo2: String, fecha: String) =
+
+    fun escribirPelea(db_ref: DatabaseReference, id: String, id_equipo1: String, id_equipo2: String, fecha: String, url_equipo1: String? = null, url_equipo2: String? = null, nombre_equipo1: String? = null, nombre_equipo2: String? = null) =
         db_ref.child("peleas").child(id).setValue(
             Pelea(
                 id,
                 id_equipo1,
                 id_equipo2,
-                fecha
+                fecha,
+                url_equipo1,
+                url_equipo2,
+                nombre_equipo1,
+                nombre_equipo2
             )
         )
 }
