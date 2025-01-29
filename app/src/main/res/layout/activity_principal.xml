@@ -9,13 +9,12 @@
     tools:context=".ActividadPrincipal">
 
 
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4" />
+        app:layout_constraintGuide_percent="0.3" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVertical"
@@ -71,10 +70,10 @@
         android:id="@+id/botonCrearGrupo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@null"
+        android:background="@color/translucido"
         android:scaleType="fitCenter"
-        android:src="@drawable/add_negro"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/add_blanco"
+        app:layout_constraintBottom_toTopOf="@id/botonCrearPelea"
         app:layout_constraintEnd_toStartOf="@+id/botonListaSuperheroe"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/botonCrearSuperheroe" />
@@ -83,13 +82,37 @@
         android:id="@+id/botonListaGrupo"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@null"
         android:scaleType="fitCenter"
-        android:src="@drawable/ver_lista_negro"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ver_lista_blanco"
+        android:background="@color/translucido"
+        app:layout_constraintBottom_toTopOf="@id/botonListaPelea"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/botonCrearSuperheroe"
         app:layout_constraintTop_toBottomOf="@id/botonListaSuperheroe" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/botonCrearPelea"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@null"
+        android:scaleType="fitCenter"
+        android:src="@drawable/add_negro"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/botonListaSuperheroe"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/botonCrearGrupo" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/botonListaPelea"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ver_lista_negro"
+        android:background="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/botonCrearSuperheroe"
+        app:layout_constraintTop_toBottomOf="@id/botonListaGrupo"/>
 
     <TextView
         android:id="@+id/textoAñadirSuperheroe"
@@ -137,7 +160,6 @@
         android:shadowRadius="10"
         android:text="Añadir Grupo"
         android:textColor="@color/white"
-        android:background="@color/translucido"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/botonCrearGrupo"
@@ -155,10 +177,43 @@
         android:shadowRadius="10"
         android:text="Ver lista grupos"
         android:textColor="@color/white"
-        android:background="@color/translucido"
         android:textSize="20dp"
         app:layout_constraintStart_toEndOf="@id/guidelineVertical"
         app:layout_constraintTop_toTopOf="@id/botonListaGrupo"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textoAñadirPelea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:shadowColor="@color/white"
+        android:shadowDx="10"
+        android:shadowDy="2"
+        android:shadowRadius="10"
+        android:text="Añadir Pelea"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/botonCrearPelea"
+        app:layout_constraintEnd_toStartOf="@id/guidelineVertical"/>
+
+    <TextView
+        android:id="@+id/textoVerListaPeleas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:shadowColor="@color/white"
+        android:shadowDx="10"
+        android:shadowDy="2"
+        android:shadowRadius="10"
+        android:text="Ver lista peleas"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        app:layout_constraintStart_toEndOf="@id/guidelineVertical"
+        app:layout_constraintTop_toTopOf="@id/botonListaPelea"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

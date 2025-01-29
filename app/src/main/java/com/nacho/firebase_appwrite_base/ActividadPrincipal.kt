@@ -32,7 +32,14 @@ class ActividadPrincipal : AppCompatActivity() {
             val intent = Intent(this, VerListaGrupos::class.java)
             startActivity(intent)
         }
-
+        binding.botonCrearPelea.setOnClickListener{
+            val intent = Intent(this, CrearPelea::class.java)
+            startActivity(intent)
+        }
+        binding.botonListaPelea.setOnClickListener{
+            val intent = Intent(this, VerListaPeleas::class.java)
+            startActivity(intent)
+        }
 
     }
 }

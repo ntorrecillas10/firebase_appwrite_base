@@ -124,7 +124,7 @@ class GrupoAdapter(
         holder.binding.verSuperheroes.setOnClickListener {
             val intent = Intent(holder.itemView.context, VerListaSuperheroes::class.java).apply {
                 putExtra("accion", "grupo")
-                putExtra("id_grupo_accion", grupo.nombre)
+                putExtra("id_grupo_accion", grupo.key)
             }
             holder.itemView.context.startActivity(intent)
         }

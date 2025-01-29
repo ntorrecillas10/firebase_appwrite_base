@@ -94,7 +94,7 @@ class VerListaSuperheroes<T> : AppCompatActivity() {
 
         var busqueda:String=when(accion){
             "fichar"->"libre"
-            "plantilla"->id_grupo_accion!!
+            "grupo"->id_grupo_accion!!
             else->""
         }
 

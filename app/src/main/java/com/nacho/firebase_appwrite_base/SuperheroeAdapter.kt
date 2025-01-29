@@ -47,7 +47,7 @@ class SuperheroeAdapter(
         val superheroe = displayedList[position]
         holder.binding.nombreCreado.text = superheroe.nombre
         holder.binding.ratingCreado.rating = superheroe.rating
-        holder.binding.estadoCreado.text = superheroe.id_grupo
+        holder.binding.estadoCreado.text = superheroe.nombre_grupo
 
         miProyectoId = "67586efe0025b764b95d" // ID del proyecto de Appwrite
         miBucketId = "67586f44003e5355a3b7" // ID del bucket de Appwrite
