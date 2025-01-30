@@ -39,6 +39,7 @@ class MensajeActivity : AppCompatActivity() {
     private lateinit var mensajesAdaptador: MensajeAdaptador
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMensajeBinding.inflate(layoutInflater)
@@ -48,38 +49,35 @@ class MensajeActivity : AppCompatActivity() {
         RefBD = FirebaseDatabase.getInstance().getReference()
         listaMensajes = mutableListOf()
 
+
+
         binding.btnvolver.setOnClickListener {
             val intent = Intent(this, VerListaGrupos::class.java)
             startActivity(intent)
         }
-
-        mensajesAdaptador = MensajeAdaptador(listaMensajes)
-        binding.rviewMensajes.layoutManager = LinearLayoutManager(applicationContext)
-        binding.rviewMensajes.setHasFixedSize(true)
 
         binding.botonEnviar.setOnClickListener {
             val mensaje = binding.textoMensaje.text.toString().trim()
 
             if (mensaje.trim() != "") {
                 val hoy: Calendar = Calendar.getInstance()
-                val formateador: SimpleDateFormat = SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
+                val formateador: SimpleDateFormat = SimpleDateFormat("dd-MM HH:mm");
                 val fecha_hora = formateador.format(hoy.getTime());
-
                 val id_mensaje = RefBD.child("chat").child("mensajes").push().key!!
                 val nuevo_mensaje = Mensaje(
                     id_mensaje,
                     grupoActual.key,
                     "",
-                    "",
+                    grupoActual.avatarUrl,
                     mensaje,
                     fecha_hora
                 )
+                Log.d("Mensaje", nuevo_mensaje.toString())
                 RefBD.child("chat").child("mensajes").child(id_mensaje).setValue(nuevo_mensaje)
                 binding.textoMensaje.setText("")
             } else {
                 Toast.makeText(applicationContext, "Escribe algo", Toast.LENGTH_SHORT).show()
             }//Actualizamos la lista de mensajes
-            mensajesAdaptador.notifyDataSetChanged()
         }
 
         RefBD.child("chat").child("mensajes").addChildEventListener(object : ChildEventListener {
@@ -92,7 +90,6 @@ class MensajeActivity : AppCompatActivity() {
                     } else {
 
                         var semaforo = CountDownLatch(1)
-
 
                         RefBD.child("grupos").child(pojo_mensaje.id_emisor!!)
                             .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -107,6 +104,19 @@ class MensajeActivity : AppCompatActivity() {
                                 }
                             })
                         semaforo.await()
+                    }
+
+                    runOnUiThread {
+                        listaMensajes.add(pojo_mensaje)
+                        mensajesAdaptador = MensajeAdaptador(listaMensajes)
+                        binding.rviewMensajes.layoutManager = LinearLayoutManager(applicationContext)
+                        binding.rviewMensajes.setHasFixedSize(true)
+                        binding.rviewMensajes.adapter = mensajesAdaptador
+                        //Ordenamos la lista por fecha
+                        listaMensajes.sortBy { it.fecha_hora }
+                        mensajesAdaptador.notifyDataSetChanged()
+
+
                     }
 
 

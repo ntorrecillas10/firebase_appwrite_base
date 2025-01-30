@@ -13,7 +13,11 @@ import io.appwrite.Client
 import io.appwrite.services.Storage
 import layout.Mensaje
 
-class MensajeAdaptador(private val lista_mensajes: List<Mensaje>) : RecyclerView.Adapter<MensajeAdaptador.MensajeViewHolder>() {
+class MensajeAdaptador(
+    originalList: List<Mensaje>,
+) : RecyclerView.Adapter<MensajeAdaptador.MensajeViewHolder>() {
+
+    private var displayedList: List<Mensaje> = originalList // Lista que se muestra actualmente
 
     inner class MensajeViewHolder(val binding: ItemChatBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -29,7 +33,7 @@ class MensajeAdaptador(private val lista_mensajes: List<Mensaje>) : RecyclerView
     }
 
     override fun onBindViewHolder(holder: MensajeViewHolder, position: Int) {
-        val mensaje = lista_mensajes[position]
+        val mensaje = displayedList[position]
 
 
         miProyectoId = "67586efe0025b764b95d" // ID del proyecto de Appwrite
@@ -69,7 +73,7 @@ class MensajeAdaptador(private val lista_mensajes: List<Mensaje>) : RecyclerView
 
     }
 
-    override fun getItemCount(): Int = lista_mensajes.size
+    override fun getItemCount(): Int = displayedList.size
 
     fun opcionesGlide(context: Context): RequestOptions {
         val options = RequestOptions()
