@@ -69,23 +69,24 @@ class EditarSuperheroe : AppCompatActivity() {
             val nombre = binding.nombreEdit.text.toString()
             val rating = binding.ratingEdit.rating
 
-            if (nombre.isNotEmpty()  && rating != 0f) {
+            if (nombre.isNotEmpty() && rating != 0f) {
                 val updatedSuperheroe = Superheroe(nombre,"", rating, superheroeId)
 
-                // Actualizar en Firebase
-                refBD.child("superheroes").child(superheroeId).setValue(updatedSuperheroe)
-                    .addOnSuccessListener {
-                        uploadImageToAppwrite()
-                        scope.launch(Dispatchers.IO) {
-                            storage.deleteFile(
-                                bucketId = miBucketId,
-                                fileId = superheroeAvatar.split("/")[8]
-                            )
+                // Si se seleccionó una nueva imagen, la subimos a Appwrite, si no, mantenemos la URL actual
+                if (url != null) {
+                    uploadImageToAppwrite()
+                } else {
+                    // Mantener la imagen original en Firebase
+                    updatedSuperheroe.avatar = superheroeAvatar
+                    refBD.child("superheroes").child(superheroeId).setValue(updatedSuperheroe)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Superhéroe actualizado con éxito", Toast.LENGTH_SHORT).show()
+                            finish()
                         }
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Error al actualizar superheroe", Toast.LENGTH_SHORT).show()
-                    }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Error al actualizar superhéroe", Toast.LENGTH_SHORT).show()
+                        }
+                }
             } else {
                 Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show()
             }
@@ -107,7 +108,6 @@ class EditarSuperheroe : AppCompatActivity() {
         refBD = FirebaseDatabase.getInstance().reference
     }
 
-
     private fun setUpListeners() {
         binding.volver.setOnClickListener {
             finish()
@@ -117,7 +117,6 @@ class EditarSuperheroe : AppCompatActivity() {
         binding.avatarEdit.setOnClickListener {
             urlGaleria.launch("image/*")
         }
-
     }
 
     private fun handleImageSelection(uri: Uri?) {
@@ -161,7 +160,7 @@ class EditarSuperheroe : AppCompatActivity() {
                         refBD.child("superheroes").child(superheroeId).setValue(updatedSuperheroe)
 
                         withContext(Dispatchers.Main) {
-                            Toast.makeText(this@EditarSuperheroe, "Superheroe actualizado con éxito", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@EditarSuperheroe, "Superhéroe actualizado con éxito", Toast.LENGTH_SHORT).show()
                             finish()
                         }
                     } else {

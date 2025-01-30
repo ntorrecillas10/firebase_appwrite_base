@@ -9,12 +9,12 @@ import java.util.Locale
 val dateFormatGrupo = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 @Parcelize
 data class Grupo(
-    val nombre: String = "",
-    val lugarCreacion: String = "",
-    val worthNum: Int = 0,
-    val avatarUrl: String = "",
-    val key: String = "",
-    val fecha: String = dateFormatGrupo.format(Date())
+    var nombre: String = "",
+    var lugarCreacion: String = "",
+    var worthNum: Int = 0,
+    var avatarUrl: String = "",
+    var key: String = "",
+    var fecha: String = dateFormatGrupo.format(Date())
 ): Parcelable {
     override fun toString(): String {
         return nombre!!

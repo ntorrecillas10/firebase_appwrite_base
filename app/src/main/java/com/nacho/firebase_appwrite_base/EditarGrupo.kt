@@ -63,7 +63,6 @@ class EditarGrupo : AppCompatActivity() {
         binding.worthTextInputEdit.setText(grupoWorth.toString())
         binding.creacionGrupoTextInputEdit.setText(grupoLugar)
 
-
         Glide.with(this)
             .load(grupoAvatar)
             .into(binding.avatarInput)
@@ -77,22 +76,23 @@ class EditarGrupo : AppCompatActivity() {
             val worth = binding.worthTextInputEdit.text.toString().toIntOrNull() ?: 0
 
             if (nombre.isNotEmpty() && grupo.isNotEmpty()) {
-                val updatedGrupo = Grupo(nombre, grupo, worth,"", grupoId)
+                val updatedGrupo = Grupo(nombre, grupo, worth, "", grupoId)
 
-                // Actualizar en Firebase
-                refBD.child("grupos").child(grupoId).setValue(updatedGrupo)
-                    .addOnSuccessListener {
-                        uploadImageToAppwrite()
-                        scope.launch(Dispatchers.IO) {
-                            storage.deleteFile(
-                                bucketId = miBucketId,
-                                fileId = grupoAvatar.split("/")[8]
-                            )
+                // Si se seleccionó una nueva imagen, la subimos a Appwrite, si no, mantenemos la URL actual
+                if (url != null) {
+                    uploadImageToAppwrite(grupoAvatar)  // Subir nueva imagen
+                } else {
+                    // Mantener la imagen original en Firebase
+                    updatedGrupo.avatarUrl = grupoAvatar
+                    refBD.child("grupos").child(grupoId).setValue(updatedGrupo)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Grupo actualizado con éxito", Toast.LENGTH_SHORT).show()
+                            finish()
                         }
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(this, "Error al actualizar grupo", Toast.LENGTH_SHORT).show()
-                    }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Error al actualizar grupo", Toast.LENGTH_SHORT).show()
+                        }
+                }
             } else {
                 Toast.makeText(this, "Por favor completa todos los campos", Toast.LENGTH_SHORT).show()
             }
@@ -114,7 +114,6 @@ class EditarGrupo : AppCompatActivity() {
         refBD = FirebaseDatabase.getInstance().reference
     }
 
-
     private fun setUpListeners() {
         binding.volver.setOnClickListener {
             finish()
@@ -124,7 +123,6 @@ class EditarGrupo : AppCompatActivity() {
         binding.avatarInput.setOnClickListener {
             urlGaleria.launch("image/*")
         }
-
     }
 
     private fun handleImageSelection(uri: Uri?) {
@@ -138,7 +136,7 @@ class EditarGrupo : AppCompatActivity() {
         }
     }
 
-    private fun uploadImageToAppwrite() {
+    private fun uploadImageToAppwrite(grupoAvatar: String) {
         if (url != null) {
             scope.launch(Dispatchers.IO) {
                 try {
@@ -167,6 +165,16 @@ class EditarGrupo : AppCompatActivity() {
                         )
 
                         refBD.child("grupos").child(grupoId).setValue(updatedGrupo)
+
+                        // Eliminar la imagen anterior de Appwrite si se subió una nueva
+                        try {
+                            storage.deleteFile(
+                                bucketId = miBucketId,
+                                fileId = grupoAvatar.split("/")[8] // El ID del archivo de la imagen
+                            )
+                        } catch (e: Exception) {
+                            Log.e("UploadError", "Error al eliminar la imagen anterior: ${e.message}")
+                        }
 
                         withContext(Dispatchers.Main) {
                             Toast.makeText(this@EditarGrupo, "Grupo actualizado con éxito", Toast.LENGTH_SHORT).show()
