@@ -1,5 +1,6 @@
 package com.nacho.firebase_appwrite_base
 
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -77,10 +78,18 @@ class GrupoAdapter(
                 holder.binding.editButton.visibility = View.VISIBLE
                 holder.binding.deleteButton.visibility = View.VISIBLE
             }
-
-
-
         }
+
+
+        holder.binding.iconChat.setOnClickListener {
+            val intent = Intent(holder.itemView.context, MensajeActivity::class.java).apply {
+                putExtra("Grupo", grupo)
+            }
+            holder.itemView.context.startActivity(intent)
+        }
+
+
+
         // Botón de editar
         holder.binding.editButton.setOnClickListener {
             val intent = Intent(holder.itemView.context, EditarGrupo::class.java).apply {

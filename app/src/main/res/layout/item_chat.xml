@@ -3,27 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/negro_transparente"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/pendientes_mens"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        >
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            android:text="Tienes mensajes sin leer"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:background="@color/negro_transparente"
-            app:layout_constraintBottom_toBottomOf="parent"
-            />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
         android:id="@+id/yo"
@@ -31,11 +13,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         android:layout_marginEnd="70dp"
-        android:background="@drawable/bt_round_transparent_chat"
         android:fontFamily="@font/roboto"
         android:text="TextView"
         android:textSize="20sp"
-
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,6 +29,7 @@
         android:fontFamily="@font/roboto"
         android:textSize="12sp"
         android:textStyle="italic"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -60,6 +42,7 @@
         android:fontFamily="@font/roboto"
         android:textSize="12sp"
         android:textStyle="italic"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/yo"
@@ -72,6 +55,7 @@
         android:layout_marginStart="70dp"
         android:layout_marginTop="48dp"
         android:text="TextView"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -84,7 +68,7 @@
         android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_androide" />
+        app:srcCompat="@drawable/photo_blanco" />
 
     <ImageView
         android:id="@+id/imagen_yo"
@@ -94,6 +78,6 @@
         android:layout_marginEnd="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_androide" />
+        app:srcCompat="@drawable/photo_blanco" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

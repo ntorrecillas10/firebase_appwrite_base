@@ -71,6 +71,8 @@ class CrearGrupo : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+
         // Listener para seleccionar una imagen para el avatar
         binding.avatarInput.setOnClickListener {
             urlGaleria.launch("image/*") // Abre la galería para seleccionar una imagen

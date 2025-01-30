@@ -37,6 +37,17 @@
         android:scaleType="fitCenter"/>
 
     <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/icon_chat"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ver_superheroes"
+        android:src="@drawable/icon_chat"
+        android:background="@color/black"
+        android:layout_margin="10dp"
+        android:scaleType="fitCenter"/>
+
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/anadir_superheroes"
         android:layout_width="50dp"
         android:layout_height="50dp"
