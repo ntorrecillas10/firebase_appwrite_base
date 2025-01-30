@@ -38,10 +38,10 @@ class CrearPelea : AppCompatActivity() {
     private lateinit var binding: ActivityCrearPeleaBinding
 
     private fun cargarSpinner(selector: Spinner) {
-        val lista: MutableList<String>
-        val adaptador: ArrayAdapter<String>
+        val lista: MutableList<Grupo>
+        val adaptador: ArrayAdapter<Grupo>
         lista = ArrayList()
-        adaptador = ArrayAdapter<String>(
+        adaptador = ArrayAdapter<Grupo>(
             this,
             androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, lista
         )
@@ -54,7 +54,7 @@ class CrearPelea : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     snapshot.children.forEach { hijo: DataSnapshot? ->
                         val pojo_grupo = hijo?.getValue(Grupo::class.java)
-                        lista.add(pojo_grupo?.nombre!!)
+                        lista.add(pojo_grupo!!)
                     }
                     adaptador.notifyDataSetChanged()
                 }

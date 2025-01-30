@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.database.FirebaseDatabase
-import com.nacho.firebase_appwrite_base.databinding.ItemGruposBinding
 import com.nacho.firebase_appwrite_base.databinding.ItemPeleasBinding
-import com.nacho.firebase_appwrite_base.databinding.ItemSuperheroeBinding
 import io.appwrite.Client
 import io.appwrite.exceptions.AppwriteException
 import io.appwrite.services.Storage
@@ -89,17 +87,20 @@ class PeleaAdapter(
         holder.binding.main.setOnClickListener{
             //damos visibilidad a sus botones de borrar y editar y quitamos la visibilidad a los demás botones de editar y borrar
 
-            if (holder.binding.deleteButton.visibility == View.VISIBLE){
-                holder.binding.deleteButton.visibility = View.INVISIBLE
+            if (holder.binding.deleteButton.visibility == View.VISIBLE && holder.binding.editButton.visibility == View.VISIBLE){
+                holder.binding.deleteButton.visibility = View.GONE
+                holder.binding.editButton.visibility = View.GONE
             }else{
 
                 //recorremos el listado del recycler view del contexto con  id @+id/recyclerView
                 for(i in 0 until recyclerPadre.childCount){
                     val child = recyclerPadre.getChildAt(i)
                     val childViewHolder = recyclerPadre.getChildViewHolder(child) as PeleaAdapter.PeleaViewHolder
-                    childViewHolder.binding.deleteButton.visibility = View.INVISIBLE
+                    childViewHolder.binding.deleteButton.visibility = View.GONE
+                    childViewHolder.binding.editButton.visibility = View.GONE
                 }
                 holder.binding.deleteButton.visibility = View.VISIBLE
+                holder.binding.editButton.visibility = View.VISIBLE
             }
 
         }
@@ -111,6 +112,11 @@ class PeleaAdapter(
             // Eliminar pelea de Firebase
             refBD.child("peleas").child(pelea.id!!).removeValue()
 
+        }
+        holder.binding.editButton.setOnClickListener {
+            val intent = Intent(contexto, EditarPelea::class.java)
+            intent.putExtra("peleaId", pelea.id)
+            contexto.startActivity(intent)
         }
 
     }
